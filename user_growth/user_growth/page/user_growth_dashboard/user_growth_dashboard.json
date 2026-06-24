@@ -1,0 +1,11 @@
+{
+  "doctype": "Page",
+  "module": "User Growth",
+  "name": "user_growth_dashboard",
+  "page_name": "user_growth_dashboard",
+  "title": "User Growth Dashboard",
+  "icon": "octicon octicon-graph",
+  "hide_toolbar": 0,
+  "single_column": 1,
+  "standard": "Yes"
+}

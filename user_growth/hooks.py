@@ -4,6 +4,9 @@ app_publisher = "HANZEREN"
 app_description = "User growth and churn analysis app"
 app_email = "agd3073511197@gmail.com"
 app_license = "mit"
+page_js = {
+    "user_growth_dashboard": "user_growth/page/user_growth_dashboard/user_growth_dashboard.js"
+}
 
 # Apps
 # ------------------
@@ -83,7 +86,7 @@ app_license = "mit"
 # ------------
 
 # before_install = "user_growth.install.before_install"
-# after_install = "user_growth.install.after_install"
+after_install = "user_growth.install.after_install"
 
 # Uninstallation
 # ------------

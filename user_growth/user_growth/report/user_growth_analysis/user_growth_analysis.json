@@ -1,0 +1,55 @@
+{
+  "add_total_row": 0,
+  "add_translate_data": 0,
+  "columns": [
+    {
+      "label": "Month",
+      "fieldname": "month",
+      "fieldtype": "Data"
+    },
+    {
+      "label": "New Users",
+      "fieldname": "new_users",
+      "fieldtype": "Int"
+    },
+    {
+      "label": "Churned Users",
+      "fieldname": "churned_users",
+      "fieldtype": "Int"
+    },
+    {
+      "label": "Net Growth",
+      "fieldname": "net_growth",
+      "fieldtype": "Int"
+    },
+    {
+      "label": "Churn Rate",
+      "fieldname": "churn_rate",
+      "fieldtype": "Percent"
+    }
+  ],
+  "creation": "2026-06-24 14:57:43.777644",
+  "disable_prepared_report_automation": 0,
+  "disabled": 0,
+  "docstatus": 0,
+  "doctype": "Report",
+  "filters": [],
+  "idx": 0,
+  "is_standard": "Yes",
+  "letter_head": null,
+  "modified": "2026-06-24 14:57:43.777644",
+  "modified_by": "Administrator",
+  "module": "User Growth",
+  "name": "User Growth Analysis",
+  "owner": "Administrator",
+  "prepared_report": 0,
+  "ref_doctype": "User Service Record",
+  "report_name": "User Growth Analysis",
+  "report_type": "Script Report",
+  "roles": [
+    {
+      "role": "System Manager"
+    }
+  ],
+  "timeout": 0
+}

@@ -1,0 +1,95 @@
+frappe.pages["user_growth_dashboard"].on_page_load = function (wrapper) {
+	const page = frappe.ui.make_app_page({
+		parent: wrapper,
+		title: __("User Growth Dashboard"),
+		single_column: true,
+	});
+
+	page.set_primary_action(__("Refresh"), () => load_dashboard(wrapper), "refresh");
+	$(wrapper).find(".layout-main-section").html(`
+		<style>
+			.user-growth-dashboard { padding: 8px; background: var(--subtle-fg); }
+			.ug-kpis { display: grid; grid-template-columns: repeat(4, minmax(160px, 1fr)); gap: 16px; margin-bottom: 16px; }
+			.ug-card, .ug-panel { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 10px; padding: 18px; }
+			.ug-card .label { color: var(--text-muted); font-size: 13px; }
+			.ug-card .value { font-size: 30px; font-weight: 700; margin-top: 8px; }
+			.ug-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+			.ug-panel-wide { grid-column: 1 / -1; }
+			.ug-panel h4 { margin: 0 0 14px; }
+			.ug-chart { min-height: 280px; }
+			@media (max-width: 900px) { .ug-kpis, .ug-grid { grid-template-columns: 1fr 1fr; } }
+			@media (max-width: 560px) { .ug-kpis, .ug-grid { grid-template-columns: 1fr; } .ug-panel-wide { grid-column: auto; } }
+		</style>
+		<div class="user-growth-dashboard">
+			<div class="ug-kpis">
+				<div class="ug-card"><div class="label">${__("Total Users")}</div><div class="value" data-kpi="total_users">-</div></div>
+				<div class="ug-card"><div class="label">${__("Active Users")}</div><div class="value text-success" data-kpi="active_users">-</div></div>
+				<div class="ug-card"><div class="label">${__("Churned Users")}</div><div class="value text-danger" data-kpi="churned_users">-</div></div>
+				<div class="ug-card"><div class="label">${__("New This Month")}</div><div class="value text-primary" data-kpi="new_users_this_month">-</div></div>
+			</div>
+			<div class="ug-grid">
+				<div class="ug-panel ug-panel-wide"><h4>${__("Monthly Growth Trend")}</h4><div class="ug-chart" data-chart="trend"></div></div>
+				<div class="ug-panel"><h4>${__("User Region Distribution")}</h4><div class="ug-chart" data-chart="regions"></div></div>
+				<div class="ug-panel"><h4>${__("Acquisition Channel Distribution")}</h4><div class="ug-chart" data-chart="channels"></div></div>
+			</div>
+		</div>
+	`);
+
+	load_dashboard(wrapper);
+};
+
+frappe.pages["user_growth_dashboard"].refresh = function (wrapper) {
+	load_dashboard(wrapper);
+};
+
+function load_dashboard(wrapper) {
+	frappe.call({
+		method: "user_growth.user_growth.page.user_growth_dashboard.user_growth_dashboard.get_dashboard_data",
+		freeze: true,
+		freeze_message: __("Loading dashboard..."),
+		callback: (response) => render_dashboard(wrapper, response.message || {}),
+	});
+}
+
+function render_dashboard(wrapper, data) {
+	const $wrapper = $(wrapper);
+	Object.entries(data.summary || {}).forEach(([key, value]) => {
+		$wrapper.find(`[data-kpi="${key}"]`).text(Number(value || 0).toLocaleString());
+	});
+
+	const trend = data.trend || [];
+	make_chart($wrapper.find('[data-chart="trend"]')[0], {
+		data: {
+			labels: trend.map((row) => row.month),
+			datasets: [
+				{ name: __("New Users"), values: trend.map((row) => row.new_users) },
+				{ name: __("Churned Users"), values: trend.map((row) => row.churned_users) },
+				{ name: __("Net Growth"), values: trend.map((row) => row.net_growth) },
+			],
+		},
+		type: "line",
+		height: 280,
+		colors: ["#2490ef", "#e24c4c", "#28a745"],
+	});
+
+	render_distribution($wrapper.find('[data-chart="regions"]')[0], data.regions, "#2490ef");
+	render_distribution($wrapper.find('[data-chart="channels"]')[0], data.channels, "#7c5ce7");
+}
+
+function render_distribution(element, rows = [], color) {
+	make_chart(element, {
+		data: {
+			labels: rows.map((row) => row.label),
+			datasets: [{ values: rows.map((row) => row.value) }],
+		},
+		type: "bar",
+		height: 280,
+		colors: [color],
+	});
+}
+
+function make_chart(element, options) {
+	if (!element) return;
+	$(element).empty();
+	new frappe.Chart(element, options);
+}
