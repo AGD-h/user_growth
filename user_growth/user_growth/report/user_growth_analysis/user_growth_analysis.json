@@ -3,27 +3,27 @@
   "add_translate_data": 0,
   "columns": [
     {
-      "label": "Month",
+      "label": "月份",
       "fieldname": "month",
       "fieldtype": "Data"
     },
     {
-      "label": "New Users",
+      "label": "新增用户",
       "fieldname": "new_users",
       "fieldtype": "Int"
     },
     {
-      "label": "Churned Users",
+      "label": "流失用户",
       "fieldname": "churned_users",
       "fieldtype": "Int"
     },
     {
-      "label": "Net Growth",
+      "label": "净增长",
       "fieldname": "net_growth",
       "fieldtype": "Int"
     },
     {
-      "label": "Churn Rate",
+      "label": "流失率",
       "fieldname": "churn_rate",
       "fieldtype": "Percent"
     }

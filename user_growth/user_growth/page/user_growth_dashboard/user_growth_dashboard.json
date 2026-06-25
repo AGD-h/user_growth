@@ -3,7 +3,7 @@
   "module": "User Growth",
   "name": "user_growth_dashboard",
   "page_name": "user_growth_dashboard",
-  "title": "User Growth Dashboard",
+  "title": "用户增长数据大屏",
   "icon": "octicon octicon-graph",
   "hide_toolbar": 0,
   "single_column": 1,
